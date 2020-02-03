@@ -12,7 +12,8 @@
 
  Другими словами: функция должна возвращать в неизменном виде то, что поступает ей на вход
  */
-function returnFirstArgument() {
+function returnFirstArgument(a) {
+    return a;
 }
 
 /*
@@ -30,6 +31,7 @@ function returnFirstArgument() {
    sumWithDefaults(10) вернет 110
  */
 function sumWithDefaults(a, b) {
+    return a + b;
 }
 
 /*
@@ -38,9 +40,10 @@ function sumWithDefaults(a, b) {
  Функция должна принимать другую функцию и возвращать результат вызова этой функции
 
  Пример:
-   returnFnResult(() => 'привет') вернет 'привет'
+   returnFnResult(() => 'привет') // вернет 'привет'
  */
 function returnFnResult(fn) {
+    return fn();
 }
 
 /*
@@ -57,6 +60,9 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number) {
+    let a = number;
+
+    return () => ++a;
 }
 
 /*
@@ -66,9 +72,16 @@ function returnCounter(number) {
  Количество переданных аргументов заранее неизвестно
 
  Пример:
-   returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
+   returnArgumentsArray(1, 2, 3) // вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
+    let ArrIn = [];
+    
+    for (let i = 0; i < arguments.length; i++) {
+        ArrIn[i] = arguments[i];
+    }
+    
+    return ArrIn;
 }
 
 /*
@@ -84,9 +97,16 @@ function returnArgumentsArray() {
 
    var newSum = bindFunction(sum, 2, 4);
 
-   console.log(newSum()) выведет 6
+   console.log(newSum()) // выведет 6
  */
-function bindFunction(fn) {
+function bindFunction() {
+    let fnIn = arguments[0];
+    let aIn = arguments[1];
+    let bIn = arguments[2];
+    
+    return function() {
+        return fnIn(aIn, bIn);  
+    }
 }
 
 export {
