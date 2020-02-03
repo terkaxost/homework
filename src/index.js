@@ -61,7 +61,7 @@ function returnFnResult(fn) {
  */
 function returnCounter(number) {
     let a = number;
-
+    
     return () => ++a;
 }
 
@@ -104,9 +104,7 @@ function bindFunction() {
     let aIn = arguments[1];
     let bIn = arguments[2];
     
-    return function() {
-        return fnIn(aIn, bIn);  
-    }
+    return () => fnIn(aIn, bIn);
 }
 
 export {
