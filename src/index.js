@@ -22,15 +22,15 @@ function returnFirstArgument(a) {
  2.1: Функция должна возвращать сумму переданных аргументов
 
  Пример:
-   sumWithDefaults(10, 20) вернет 30
-   sumWithDefaults(2, 4) вернет 6
+   sumWithDefaults(10, 20) // вернет 30
+   sumWithDefaults(2, 4) // вернет 6
 
  2.1 *: Значение по умолчанию для второго аргумента должно быть равно 100
 
  Пример:
    sumWithDefaults(10) вернет 110
  */
-function sumWithDefaults(a, b) {
+function sumWithDefaults(a, b = 100) {
     return a + b;
 }
 
@@ -60,9 +60,13 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number) {
-    let a = number;
+    let aIn = number;
     
-    return () => ++a;
+    if (aIn == undefined) {
+        aIn = 0;
+    }
+
+    return () => ++aIn;
 }
 
 /*
@@ -99,7 +103,8 @@ function returnArgumentsArray() {
 
    console.log(newSum()) // выведет 6
  */
-function bindFunction() {
+
+function bindFunction() {    
     let fnIn = arguments[0];
     let aIn = arguments[1];
     let bIn = arguments[2];
