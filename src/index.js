@@ -59,14 +59,8 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 12
    console.log(f()); // выведет 13
  */
-function returnCounter(number) {
-    let aIn = number;
-    
-    if (aIn == undefined) {
-        aIn = 0;
-    }
-
-    return () => ++aIn;
+function returnCounter(number = 0) {
+    return () => ++number;
 }
 
 /*
@@ -79,13 +73,13 @@ function returnCounter(number) {
    returnArgumentsArray(1, 2, 3) // вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
-    let ArrIn = [];
+    let arrIn = [];
     
     for (let i = 0; i < arguments.length; i++) {
-        ArrIn[i] = arguments[i];
+        arrIn[i] = arguments[i];
     }
     
-    return ArrIn;
+    return arrIn;
 }
 
 /*
@@ -106,10 +100,13 @@ function returnArgumentsArray() {
 
 function bindFunction() {    
     let fnIn = arguments[0];
-    let aIn = arguments[1];
-    let bIn = arguments[2];
-    
-    return () => fnIn(aIn, bIn);
+    let arrIn = [];
+
+    for (let i = 0; i < arguments.length; i++) {
+        arrIn[i] = arguments[i + 1];
+    }
+
+    return () => fnIn(...arrIn);
 }
 
 export {
