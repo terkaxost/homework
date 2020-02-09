@@ -1,119 +1,195 @@
-/* ДЗ 1 - Функции */
+/* ДЗ 2 - работа с массивами и объектами */
 
 /*
  Задание 1:
 
- 1.1: Добавьте к функции параметр с любым именем
- 1.2: Функция должна возвращать аргумент, переданный ей в качестве параметра
-
- Пример:
-   returnFirstArgument(10) вернет 10
-   returnFirstArgument('привет') вернет `привет`
-
- Другими словами: функция должна возвращать в неизменном виде то, что поступает ей на вход
+ Напишите аналог встроенного метода forEach для работы с массивами
+ Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
+var myArr = [11, 22, 33];
+function myFn() {
+    console.log(arguments);
+}
+myArr.forEach(myFn);
+console.log('===');
+forEach(myArr, myFn);
  */
-function returnFirstArgument(a) {
-    return a;
+function forEach(array, fn) {
+    for (let i = 0; i < array.length; i++) {
+        fn(array[i], i, array);
+    }
 }
 
 /*
  Задание 2:
 
- 2.1: Функция должна возвращать сумму переданных аргументов
+ Напишите аналог встроенного метода map для работы с массивами
+ Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
+function myFn() {
+    //console.log(arguments);
+    return arguments[0] + '!';
+}
+var myArr = ['monday', 'tuesday', 'wednesday'];
 
- Пример:
-   sumWithDefaults(10, 20) // вернет 30
-   sumWithDefaults(2, 4) // вернет 6
-
- 2.1 *: Значение по умолчанию для второго аргумента должно быть равно 100
-
- Пример:
-   sumWithDefaults(10) вернет 110
+var myArrMap = myArr.map(myFn);
+console.log(myArrMap);
+console.log('===');
+myArrMap = map(myArr, myFn);
+console.log(myArrMap);
  */
-function sumWithDefaults(a, b = 100) {
-    return a + b;
+function map(array, fn) {
+    let inArr = [];
+    
+    for (let i = 0; i < array.length; i++) {
+        inArr[i] = fn(array[i], i, array);
+    }
+    
+    return inArr;
 }
 
 /*
  Задание 3:
 
- Функция должна принимать другую функцию и возвращать результат вызова этой функции
-
- Пример:
-   returnFnResult(() => 'привет') // вернет 'привет'
+ Напишите аналог встроенного метода reduce для работы с массивами
+ Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
+var myArr = [11, 22, 33, 44];
+var myIni = 0;
+var myFn = function() {
+    console.log(arguments);
+    return arguments[0] + arguments[1];
+}
+var result = myArr.reduce(myFn, myIni);
+console.log(result);
+console.log('===');
+myResult = reduce(myArr, myFn, myIni)
+console.log(myResult);
  */
-function returnFnResult(fn) {
-    return fn();
+
+function reduce(array, fn, initial) {
+    let inTemp;
+    let i;
+
+    if (initial == undefined) {
+        inTemp = array[0];
+        i = 1;
+    } else {
+        inTemp = initial;
+        i = 0;
+    }
+    for (i; i < array.length; i++) {
+        inTemp = fn(inTemp, array[i], i, array);
+    }
+    
+    return inTemp;
 }
 
 /*
  Задание 4:
 
- Функция должна принимать число и возвращать новую функцию (F)
- При вызове функции F, переданное ранее число должно быть увеличено на единицу и возвращено из F
+ Функция должна перебрать все свойства объекта, преобразовать их имена в верхний регистр и вернуть в виде массива
 
  Пример:
-   var f = returnCounter(10);
-
-   console.log(f()); // выведет 11
-   console.log(f()); // выведет 12
-   console.log(f()); // выведет 13
+var result = upperProps({ name: 'Сергей', lastName: 'Петров' }) // вернет ['NAME', 'LASTNAME']
+console.log('===');
+console.log(result);
  */
-function returnCounter(number = 0) {
-    return () => ++number;
+function upperProps(obj) {
+    let inArr = [];
+    
+    for (let key in obj) {
+        if ({}.hasOwnProperty.call(obj, key)) {
+            inArr.push(key.toUpperCase());    
+        }
+    }
+
+    return inArr;
 }
 
 /*
  Задание 5 *:
 
- Функция должна возвращать все переданные ей аргументы в виде массива
- Количество переданных аргументов заранее неизвестно
+ Напишите аналог встроенного метода slice для работы с массивами
+ Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
+var myArr = ['a', 'b', 'c', 'd', 'e'];
+var myFrom = 1;
+var myTo = 3;
+//console.log(myArr.slice(-5, 2));
+console.log( myArr.slice(-10, -110) );
 
- Пример:
-   returnArgumentsArray(1, 2, 3) // вернет [1, 2, 3]
+var result = slice(myArr, -10, -110);
+console.log(result);
  */
-function returnArgumentsArray() {
-    let arrIn = [];
-    
-    for (let i = 0; i < arguments.length; i++) {
-        arrIn[i] = arguments[i];
+function slice(array, from, to) {
+    let inArr = [];
+    let inFrom;
+    let inTo;
+
+    if (from == undefined | - from > array.length) {
+        inFrom = 0;
+    } else if (from < 0) {
+        inFrom = array.length + from;
+    } else if (from >= 0) {
+        inFrom = from;
+    } 
+    if (to == undefined | to > array.length) {
+        inTo = array.length
+    } else if (to < 0) {
+        inTo = array.length + to;
+    } else if (to >= 0) {
+        inTo = to;
     }
-    
-    return arrIn;
+    for (let i = 0; i < inTo - inFrom; i++) {
+        inArr[i] = array[i + inFrom];
+    }
+
+    return inArr;
 }
 
 /*
  Задание 6 *:
 
- Функция должна принимать другую функцию (F) и некоторое количество дополнительных аргументов
- Функция должна привязать переданные аргументы к функции F и вернуть получившуюся функцию
+ Функция принимает объект и должна вернуть Proxy для этого объекта
+ Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
 
- Пример:
-   function sum(a, b) {
-     return a + b;
-   }
-
-   var newSum = bindFunction(sum, 2, 4);
-
-   console.log(newSum()) // выведет 6
- */
-
-function bindFunction() {    
-    let fnIn = arguments[0];
-    let arrIn = [];
-
-    for (let i = 0; i < arguments.length; i++) {
-        arrIn[i] = arguments[i + 1];
+var myTarget = {name1: '3qr3v', name2: '2fwsv'};
+var myProxy = new Proxy(myTarget, {
+    get(target, property) {
+        //console.log(arguments);
+        //console.log('!!!', target[property]);
+        return target[property]*target[property];
     }
+});
 
-    return () => fnIn(...arrIn);
+myProxy.test = 11;
+console.log(myProxy);
+console.log(myTarget.test);
+console.log(myProxy.test);
+console.log('===');
+
+var myObj = {};
+
+function createProxy(obj) {
+    console.log(...arguments);
+    let inTarget = obj;
+    let inHandler = {};
+   
+    inProxy = {target: inTarget, handler: inHandler};
+
+    return inProxy;
+}
+var resultObj = createProxy(myObj);
+console.log(resultObj);
+myObj.val2 = 5;
+console.log(resultObj);
+ */
+function createProxy(obj) {
+    return obj;
 }
 
 export {
-    returnFirstArgument,
-    sumWithDefaults,
-    returnArgumentsArray,
-    returnFnResult,
-    returnCounter,
-    bindFunction
-}
+    forEach,
+    map,
+    reduce,
+    upperProps,
+    slice,
+    createProxy
+};
