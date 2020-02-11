@@ -40,7 +40,7 @@ function map(array, fn) {
     let inArr = [];
     
     for (let i = 0; i < array.length; i++) {
-        inArr[i] = fn(array[i], i, array);
+        inArr.push( fn(array[i], i, array) );
     }
     
     return inArr;
@@ -96,8 +96,8 @@ function upperProps(obj) {
     let inArr = [];
     
     for (let key in obj) {
-        if ({}.hasOwnProperty.call(obj, key)) {
-            inArr.push(key.toUpperCase());    
+        if (obj.hasOwnProperty(key)) {
+            inArr.push( key.toUpperCase() );    
         }
     }
 
@@ -138,7 +138,7 @@ function slice(array, from, to) {
         inTo = to;
     }
     for (let i = 0; i < inTo - inFrom; i++) {
-        inArr[i] = array[i + inFrom];
+        inArr.push( array[i + inFrom] );
     }
 
     return inArr;
