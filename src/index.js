@@ -13,31 +13,24 @@
  Зарпещено использовать встроенные методы для работы с массивами
 
  Пример:
-   isAllTrue([1, 2, 3, 4, 5], n => n < 10) // вернет true
-   isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
+console.log( isAllTrue([1, 2, 3, 4, 5], n => n < 10) ); // вернет true
+console.log( isAllTrue([1, 24, 3, 4, 5], n => n < 10) );// вернет false
  */
-function isAllTrue(array, fn) {
-    let inTemp = 0;
 
+function isAllTrue(array, fn) {
     if (array instanceof Array == false | array.length == 0) {
         throw new Error('empty array');
     }
     if (typeof fn != 'function') {
         throw new Error('fn is not a function');
     }
-    for (let i = 0; i < array.length; i++) {    
-        if ( fn(array[i]) ) {
-            inTemp++;
+    for (let i = 0; i < array.length; i++) { 
+        if ( fn(array[i]) == false) {
+            return false;
         }
     }
-
-    if (inTemp == array.length) {
-        inTemp = true;
-    } else {
-        inTemp = false;
-    } 
-
-    return inTemp;
+    
+    return true;
 }
 
 /*
@@ -57,8 +50,6 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
-    let inTemp = 0;
-
     if (array instanceof Array == false | array.length == 0) {
         throw new Error('empty array');
     }
@@ -67,17 +58,11 @@ function isSomeTrue(array, fn) {
     }
     for (let i = 0; i < array.length; i++) {    
         if ( fn(array[i]) ) {
-            inTemp++;
+            return true;
         }
     }
-
-    if (inTemp > 0) {
-        inTemp = true;
-    } else {
-        inTemp = false;
-    } 
-
-    return inTemp;
+    
+    return false;
 }
 
 /*
@@ -133,33 +118,34 @@ function returnBadArguments(fn) {
  4.3: Необходимо выбрасывать исключение в случаях:
    - number не является числом (с текстом "number is not a number")
    - какой-либо из аргументов div является нулем (с текстом "division by 0")
-var res = calculator(160, 2, 4, 4);
-console.log( res.div() );
- */
-function calculator() {
-    let inObj = {};
-    let inArg = [...arguments].slice(1);
-    let number;
 
-    if (arguments[0] == undefined) {
-        number = 0;
-    } else {
-        number = arguments[0];
-    }
+var res = calculator(160);
+console.log( res.sum(2, 4, 4) );
+ */
+
+function calculator(number = 0) {
+    let inObj = {};
+
     if (typeof number != 'number') {
         throw new Error('number is not a number');
     } 
     inObj.sum = function() {
+        let inArg = [...arguments];
+
         inArg.forEach( (arg) => number += arg );
 
         return number;
     };
     inObj.dif = function() {
+        let inArg = [...arguments];
+
         inArg.forEach( (arg) => number -= arg );
 
         return number;
     };
     inObj.div = function() {
+        let inArg = [...arguments];
+
         inArg.forEach( function(arg) {
             if (arg == 0) {
                 throw new Error('division by 0');
@@ -171,6 +157,8 @@ function calculator() {
         return number;
     };
     inObj.mul = function() {
+        let inArg = [...arguments];
+
         inArg.forEach( (arg) => number *= arg );
 
         return number;
