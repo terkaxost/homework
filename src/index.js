@@ -88,6 +88,7 @@ once(document.querySelector('button'), () => console.log('обработчик �
 btn1.addEventListener('click', function() {
     // console.log('btn1');
 });
+
 btn2.addEventListener('click', function(event) {
     // console.log('btn2');
 });
