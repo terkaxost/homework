@@ -121,17 +121,17 @@ function findError(where) {
    После выполнения функции, дерево <div></div>привет<p></p>loftchool!!!
    должно быть преобразовано в <div></div><p></p>
 deleteTextNodes( document.querySelector('#container') );
+const container = document.querySelector('#container');
+deleteTextNodes( container );
  */
 function deleteTextNodes(where) {
     for (let child of where.childNodes) {
-        if (child.nodeType != 3) {
-            where.appendChild(child);
-        } else {
-            where.removeChild(child);        
+        if (child.nodeType == 3) {
+            where.removeChild(child);  
         }
     }
 }
-// deleteTextNodes( document.querySelector('#container') );
+
 /*
  Задание 6:
 
