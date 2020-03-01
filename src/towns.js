@@ -42,48 +42,68 @@ function loadTowns() {
     
     const fragment = document.createDocumentFragment();
 
-    function fill(cities) {
-        let unsortCities = [];
-        let sortCities = [];
+    function sort(response) {
+        let towns = [];
 
-        for (const city of cities) {
-            unsortCities.push(city.name);
+        for (let town of response) {
+            compare(town, towns);
         }
         
-        sortCities = unsortCities.sort();
+        return towns;
+    }
 
-        for (const city of sortCities) {
+    function compare(strObj, arrObj) {
+        for (let i = 0; i < arrObj.length; i++) {
+            if (strObj.name < arrObj[i].name) {
+                arrObj.splice(i, 0, strObj);
+                
+                return arrObj;
+            }
+        }
+        arrObj.push(strObj);
+    
+        return arrObj;
+    }
+
+    function fillOk(cities) {
+        for (const city of cities) {
             const div = document.createElement('div');
+
             div.classList.add('city');
-            div.textContent = city;
+            div.textContent = city.name;
             fragment.appendChild(div);
         }
         
         homeworkContainer.appendChild(fragment);
         loadingBlock.style.display = 'none';
         filterBlock.style.display = 'block';    
-        filterResult.textContent = 'НИ ОДИН ГОРОД НЕ НАЙДЕН';
     }
 
-    async function fn() {
-        try {
-            const response = await fetch(url);
-            const cities = await response.json();
-            await fill(cities);
-        } catch (e) {
-            loadingBlock.textContent = 'Не удалось загрузить города...';
-            const btn = document.createElement('btn');
-            btn.id = 'btn';
-            btn.textContent = 'Повторить';
-            homeworkContainer.appendChild(btn);
-            btn.addEventListener('click', () => {
-                btn.remove();
-                loadTowns();
-            });
-        }
+    function fillError() {
+        const btn = document.createElement('button');
+
+        loadingBlock.textContent = 'Не удалось загрузить города...';
+        btn.id = 'btn';
+        btn.textContent = 'Повторить';
+        homeworkContainer.appendChild(btn);
+        btn.addEventListener('click', () => {
+            btn.remove();
+            loadTowns();
+        });
     }
 
-    return fn();
+    return fetch(url)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(response) {
+            fillOk(sort(response));
+
+            return sort(response);
+        })
+        .catch(function() {
+            fillError();
+        });
 }
 
 /*
@@ -99,10 +119,10 @@ function loadTowns() {
  */
 function isMatching(full, chunk) {
     if (chunk) {
-        if (full.toLowerCase().indexOf(chunk.toLowerCase()) != -1) {
-            return true;
-        }
-    }
+        return full.toLowerCase().includes(chunk.toLowerCase());
+    } 
+    
+    return false;
 }
 
 /* Блок с надписью "Загрузка" */
@@ -115,18 +135,19 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
 filterInput.addEventListener('keyup', function(e) {
-    // это обработчик нажатия кливиш в текстовом поле
-    // if (e.key == 'Enter') {
-        filterResult.textContent = '';
-        for (const child of homeworkContainer.children) {
-            if (child.classList[0] == 'city' && isMatching(child.textContent, e.target.value)) {
-                filterResult.textContent = filterResult.textContent + ' ' + child.textContent;
-            }
+    while (filterResult.firstChild) {
+        filterResult.removeChild(filterResult.firstChild);
+    }
+
+    for (let child of homeworkContainer.children) {
+        if (child.classList[0] == 'city' && isMatching(child.textContent, e.target.value)) {
+            const li = document.createElement('li');
+
+            li.textContent = child.textContent;
+            li.style.color = 'red';
+            filterResult.appendChild(li);
         }
-        if (filterResult.textContent == '') {
-            filterResult.textContent = 'НИ ОДИН ГОРОД НЕ НАЙДЕН';
-        }
-    // }
+    }
 });
 
 export {

@@ -30,25 +30,37 @@ function delayPromise(seconds) {
 
  Пример:
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
+   // console.log( compare({name: 'a2'}, [{name: 'a1'}, {name: 'b1'}, {name: 'c1'}]) );
  */
 function loadAndSortTowns() {
     const url = 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json';
 
-    return fetch(url)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(response) {
-            let unsortTowns = [];
-            let sortTowns = [];
+    function sort(response) {
+        let towns = [];
 
-            for (const town of response) {
-                unsortTowns.push(town.name);
+        for (let town of response) {
+            compare(town, towns);
+        }
+        
+        return towns;
+    }
+
+    function compare(strObj, arrObj) {
+        for (let i = 0; i < arrObj.length; i++) {
+            if (strObj.name < arrObj[i].name) {
+                arrObj.splice(i, 0, strObj);
+                
+                return arrObj;
             }
-            sortTowns = unsortTowns.sort();
+        }
+        arrObj.push(strObj);
+    
+        return arrObj;
+    }
 
-            return sortTowns;
-        });
+    return fetch(url)
+        .then(response => response.json())
+        .then(response => sort(response));
 }
 
 export {
