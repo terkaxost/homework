@@ -36,6 +36,7 @@ const homeworkContainer = document.querySelector('#homework-container');
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
+loadTowns();
 
 function loadTowns() { 
     const url = 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json';    
