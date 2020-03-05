@@ -36,75 +36,57 @@ const homeworkContainer = document.querySelector('#homework-container');
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
-loadTowns();
+fillFilter();
 
 function loadTowns() { 
     const url = 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json';    
-    
-    const fragment = document.createDocumentFragment();
-
-    function sort(response) {
-        let towns = [];
-
-        for (let town of response) {
-            compare(town, towns);
-        }
-        
-        return towns;
-    }
-
-    function compare(strObj, arrObj) {
-        for (let i = 0; i < arrObj.length; i++) {
-            if (strObj.name < arrObj[i].name) {
-                arrObj.splice(i, 0, strObj);
-                
-                return arrObj;
-            }
-        }
-        arrObj.push(strObj);
-    
-        return arrObj;
-    }
-
-    function fillOk(cities) {
-        for (const city of cities) {
-            const div = document.createElement('div');
-
-            div.classList.add('city');
-            div.textContent = city.name;
-            fragment.appendChild(div);
-        }
-        
-        homeworkContainer.appendChild(fragment);
-        loadingBlock.style.display = 'none';
-        filterBlock.style.display = 'block';    
-    }
-
-    function fillError() {
-        const btn = document.createElement('button');
-
-        loadingBlock.textContent = 'Не удалось загрузить города...';
-        btn.id = 'btn';
-        btn.textContent = 'Повторить';
-        homeworkContainer.appendChild(btn);
-        btn.addEventListener('click', () => {
-            btn.remove();
-            loadTowns();
-        });
-    }
 
     return fetch(url)
         .then(function(response) {
             return response.json();
         })
         .then(function(response) {
-            fillOk(sort(response));
-
             return sort(response);
         })
         .catch(function() {
             fillError();
         });
+}
+
+function sort(response) {
+    let towns = [];
+
+    for (let town of response) {
+        compare(town, towns);
+    }
+    
+    return towns;
+}
+
+function compare(strObj, arrObj) {
+    for (let i = 0; i < arrObj.length; i++) {
+        if (strObj.name < arrObj[i].name) {
+            arrObj.splice(i, 0, strObj);
+            
+            return arrObj;
+        }
+    }
+    arrObj.push(strObj);
+
+    return arrObj;
+}
+
+function fillError() {
+    const btn = document.createElement('button');
+
+    loadingBlock.textContent = 'Не удалось загрузить города...';
+    btn.id = 'btn';
+    btn.textContent = 'Повторить';
+    homeworkContainer.appendChild(btn);
+    btn.addEventListener('click', () => {
+        btn.remove();
+        loadTowns();
+    });
 }
 
 /*
@@ -136,20 +118,42 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
 filterInput.addEventListener('keyup', function(e) {
+    fillFilter(e.target.value);
+});
+
+function fillFilter(str) {
+    loadTowns()
+        .then(function(resolve) {
+            let cities = [];
+
+            for (let city of resolve) {
+                if (isMatching(city.name, str)) {
+                    cities.push(city);
+                }
+            }
+            fillOk(cities);
+        })
+}
+
+function fillOk(cities) {
+    const fragment = document.createDocumentFragment();
+
     while (filterResult.firstChild) {
         filterResult.removeChild(filterResult.firstChild);
     }
 
-    for (let child of homeworkContainer.children) {
-        if (child.classList[0] == 'city' && isMatching(child.textContent, e.target.value)) {
-            const li = document.createElement('li');
+    for (const city of cities) {
+        const div = document.createElement('div');
 
-            li.textContent = child.textContent;
-            li.style.color = 'red';
-            filterResult.appendChild(li);
-        }
+        div.classList.add('city');
+        div.textContent = city.name;
+        fragment.appendChild(div);
     }
-});
+    
+    filterResult.appendChild(fragment);
+    loadingBlock.style.display = 'none';
+    filterBlock.style.display = 'block';   
+}
 
 export {
     loadTowns,
