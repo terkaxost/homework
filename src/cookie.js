@@ -123,7 +123,7 @@ function fillTable(obj) {
     }
 
     for (let cooka in obj) {
-        if ({}.hasOwnProperty.call(obj, cooka)) {
+        if (obj.hasOwnProperty(cooka)) {
             let name = cooka;
             let value = obj[cooka];
 
