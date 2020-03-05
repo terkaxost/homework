@@ -53,9 +53,9 @@ filterNameInput.addEventListener('keyup', function() {
 function filterTable() {
     let objCookie = refreshCookie();
     let objFilter = {};
-    
+
     for (let cooka in objCookie) {
-        if ({}.hasOwnProperty.call(objCookie, cooka)) {
+        if (objCookie.hasOwnProperty(cooka)) {
             if (cooka.includes(filterNameInput.value) | objCookie[cooka].includes(filterNameInput.value)) {
                 objFilter[cooka] = objCookie[cooka];
             }
@@ -68,8 +68,8 @@ function filterTable() {
 addButton.addEventListener('click', () => {
     // здесь можно обработать нажатие на кнопку "добавить cookie"
     document.cookie = `${addNameInput.value}=${addValueInput.value}`;
-    addNameInput.value = '';
-    addValueInput.value = '';
+    // addNameInput.value = '';
+    // addValueInput.value = '';
     
     // fillTable( refreshCookie() );
     filterTable();
@@ -79,8 +79,10 @@ function refreshCookie() {
     let arr = [];
     let obj = {};
 
-    arr = document.cookie.split('; ');
-
+    if (document.cookie) {
+        arr = document.cookie.split('; ')
+    }
+    
     for (let elem of arr) {
         let name = elem.split('=')[0];
         let value = elem.split('=')[1];
