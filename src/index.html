@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yandex map API</title>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=d3698681-d8a6-4489-a577-b71167457881&lang=ru_RU" type="text/javascript"></script>
+    <!-- <script src="https://api-maps.yandex.ru/2.1/?apikey=930e87be-27e6-423f-b7b3-7473911d543f&lang=ru_RU" type="text/javascript"> -->
+    </script>
+    <link rel="stylesheet" href="./css/style.css">
+    <style></style>
+</head>
+<body>
+    <div class="map" id="map"></div>
+    <script id="review" type="text/x-handlebars-template">
+        <div id="reviewBody">
+            <div id="address">
+                {{address}}<button id="close"><b>X</b></button>
+            </div>
+            <div id="chat">
+                {{#each chat}}
+                    <b>{{name}}</b> {{place}} {{date}}
+                    <br>{{text}}
+                    <div><br></div>
+                {{/each}}
+            </div>
+            <form id="form">
+                <div id="formField">
+                    <div id="formHead"><b>ВАШ ОТЗЫВ</b></div>
+                    <div id="formName"><input type="text" name="name" value={{formName}}></div>
+                    <div id="formPlace"><input type="text" name="place" value={{formPlace}}></div>
+                    <div id="formText"><input type="text" name="text" value={{formText}}></div>
+                </div>
+                <div class="formBtn"><button id="send">Добавить</button></div>
+            </form>
+        </div>
+    </script>
+    <script id="balloon" type="text/x-handlebars-template">
+        <div id="balloonPlace">{{place}}</div>
+        <div id="balloonAddress"><a href="#">{{address}}</a></div>
+        <div id="balloonText">{{text}}</div>
+        <div id="balloonDate">{{date}}</div>
+    </script>
+    <script src="./js/makeMap.js"></script>
+</html>
