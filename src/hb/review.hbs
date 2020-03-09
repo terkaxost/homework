@@ -1,0 +1,21 @@
+<div id="reviewBody">
+    <div id="address">
+        {{address}}<button id="close"><b>X</b></button>
+    </div>
+    <div id="chat">
+        {{#each chat}}
+            <b>{{name}}</b> {{place}} {{date}}
+            <br>{{text}}
+            <div><br></div>
+        {{/each}}
+    </div>
+    <form id="form">
+        <div id="formField">
+            <div id="formHead"><b>ВАШ ОТЗЫВ</b></div>
+            <div id="formName"><input type="text" name="name" value={{formName}}></div>
+            <div id="formPlace"><input type="text" name="place" value={{formPlace}}></div>
+            <div id="formText"><input type="text" name="text" value={{formText}}></div>
+        </div>
+        <div class="formBtn"><button id="send">Добавить</button></div>
+    </form>
+</div>
